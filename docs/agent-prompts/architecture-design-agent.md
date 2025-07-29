@@ -15,22 +15,22 @@ primary_tools:
 ```
 New architecture design:
 1. ctx create ARCH-{project}-{component}
-2. ctx set-status 🏗️
+2. ctx set-state 🏗️
 3. Design metadata:
-   - ctx add-note "SCOPE: {system/component/integration}"
-   - ctx add-note "REQUIREMENTS: {functional} | {non-functional}"
-   - ctx add-note "CONSTRAINTS: {technical} | {business} | {regulatory}"
+   - ctx note "SCOPE: {system/component/integration}"
+   - ctx note "REQUIREMENTS: {functional} | {non-functional}"
+   - ctx note "CONSTRAINTS: {technical} | {business} | {regulatory}"
 ```
 
 ## Architecture Decision Records (ADR)
 
 ```
 ADR tracking:
-1. ctx add-note "ADR-{number}: {title}"
-2. ctx add-note "STATUS: {proposed/accepted/deprecated/superseded}"
-3. ctx add-note "CONTEXT: {problem_statement}"
-4. ctx add-note "DECISION: {chosen_solution}"
-5. ctx add-note "CONSEQUENCES: {positive} | {negative} | {risks}"
+1. ctx note "ADR-{number}: {title}"
+2. ctx note "STATUS: {proposed/accepted/deprecated/superseded}"
+3. ctx note "CONTEXT: {problem_statement}"
+4. ctx note "DECISION: {chosen_solution}"
+5. ctx note "CONSEQUENCES: {positive} | {negative} | {risks}"
 6. Memory relation: {component} -> implements -> {pattern}
 ```
 
@@ -39,19 +39,19 @@ ADR tracking:
 ```
 Pattern selection:
 1. Memory search: "{problem_type} pattern"
-2. ctx add-note "PATTERN: {pattern_name} | USE_CASE: {applicability}"
-3. ctx add-note "IMPLEMENTATION: {language/framework} specific notes"
-4. ctx add-note "TRADE-OFFS: {benefits} vs {drawbacks}"
+2. ctx note "PATTERN: {pattern_name} | USE_CASE: {applicability}"
+3. ctx note "IMPLEMENTATION: {language/framework} specific notes"
+4. ctx note "TRADE-OFFS: {benefits} vs {drawbacks}"
 ```
 
 ## System Component Design
 
 ```
 Component specification:
-- ctx add-note "COMPONENT: {name} | TYPE: {service/library/module}"
-- ctx add-note "INTERFACE: {API_spec} | PROTOCOL: {REST/gRPC/GraphQL}"
-- ctx add-note "DEPENDENCIES: {internal}: [{list}] | {external}: [{list}]"
-- ctx add-note "DATA: {storage_type} | SCHEMA: {version}"
+- ctx note "COMPONENT: {name} | TYPE: {service/library/module}"
+- ctx note "INTERFACE: {API_spec} | PROTOCOL: {REST/gRPC/GraphQL}"
+- ctx note "DEPENDENCIES: {internal}: [{list}] | {external}: [{list}]"
+- ctx note "DATA: {storage_type} | SCHEMA: {version}"
 ```
 
 ## Architecture States
@@ -68,49 +68,49 @@ Risk states:
 
 ```
 Integration planning:
-1. ctx add-note "INTEGRATION: {system_A} <-> {system_B}"
-2. ctx add-note "PROTOCOL: {sync/async} | FORMAT: {JSON/XML/protobuf}"
-3. ctx add-note "SLA: {latency}ms p99 | {throughput} rps"
-4. ctx add-note "FAILURE: {retry_strategy} | CIRCUIT_BREAKER: {config}"
+1. ctx note "INTEGRATION: {system_A} <-> {system_B}"
+2. ctx note "PROTOCOL: {sync/async} | FORMAT: {JSON/XML/protobuf}"
+3. ctx note "SLA: {latency}ms p99 | {throughput} rps"
+4. ctx note "FAILURE: {retry_strategy} | CIRCUIT_BREAKER: {config}"
 ```
 
 ## Performance Architecture
 
 ```
 Performance considerations:
-- ctx add-note "LOAD: {expected_rps} | PEAK: {max_rps}"
-- ctx add-note "LATENCY: {target}ms p50/p95/p99"
-- ctx add-note "SCALING: {horizontal/vertical} | TRIGGER: {metric}@{threshold}"
-- ctx add-note "CACHE: {layer} - {strategy} - TTL: {duration}"
+- ctx note "LOAD: {expected_rps} | PEAK: {max_rps}"
+- ctx note "LATENCY: {target}ms p50/p95/p99"
+- ctx note "SCALING: {horizontal/vertical} | TRIGGER: {metric}@{threshold}"
+- ctx note "CACHE: {layer} - {strategy} - TTL: {duration}"
 ```
 
 ## Security Architecture
 
 ```
 Security design:
-1. ctx add-note "AUTHZ: {RBAC/ABAC/custom} | PROVIDER: {implementation}"
-2. ctx add-note "ENCRYPTION: {at_rest}: {method} | {in_transit}: {TLS_version}"
-3. ctx add-note "SECRETS: {management_system} | ROTATION: {frequency}"
-4. ctx add-note "AUDIT: {events_logged} | RETENTION: {duration}"
+1. ctx note "AUTHZ: {RBAC/ABAC/custom} | PROVIDER: {implementation}"
+2. ctx note "ENCRYPTION: {at_rest}: {method} | {in_transit}: {TLS_version}"
+3. ctx note "SECRETS: {management_system} | ROTATION: {frequency}"
+4. ctx note "AUDIT: {events_logged} | RETENTION: {duration}"
 ```
 
 ## Data Architecture
 
 ```
 Data design decisions:
-- ctx add-note "STORAGE: {type} - {technology} | VOLUME: {size_estimate}"
-- ctx add-note "CONSISTENCY: {strong/eventual} | CAP: {choice}"
-- ctx add-note "PARTITION: {strategy} | SHARD_KEY: {field}"
-- ctx add-note "BACKUP: {frequency} | RPO: {time} | RTO: {time}"
+- ctx note "STORAGE: {type} - {technology} | VOLUME: {size_estimate}"
+- ctx note "CONSISTENCY: {strong/eventual} | CAP: {choice}"
+- ctx note "PARTITION: {strategy} | SHARD_KEY: {field}"
+- ctx note "BACKUP: {frequency} | RPO: {time} | RTO: {time}"
 ```
 
 ## Technology Stack Selection
 
 ```
 Stack decisions:
-1. ctx add-note "LANG: {language} v{version} | FRAMEWORK: {name} v{version}"
-2. ctx add-note "INFRA: {cloud/on-prem} | ORCHESTRATION: {k8s/ecs/custom}"
-3. ctx add-note "MONITORING: {metrics}: {tool} | {logs}: {tool} | {traces}: {tool}"
+1. ctx note "LANG: {language} v{version} | FRAMEWORK: {name} v{version}"
+2. ctx note "INFRA: {cloud/on-prem} | ORCHESTRATION: {k8s/ecs/custom}"
+3. ctx note "MONITORING: {metrics}: {tool} | {logs}: {tool} | {traces}: {tool}"
 4. Memory: Link technology choices to past success patterns
 ```
 
@@ -118,10 +118,10 @@ Stack decisions:
 
 ```
 Cost modeling:
-- ctx add-note "COMPUTE: ${estimate}/month | BASIS: {instance_types}"
-- ctx add-note "STORAGE: ${estimate}/month | GROWTH: {rate}"
-- ctx add-note "TRANSFER: ${estimate}/month | EGRESS: {GB_estimate}"
-- ctx add-note "OPTIMIZATION: {reserved/spot/savings_plan}"
+- ctx note "COMPUTE: ${estimate}/month | BASIS: {instance_types}"
+- ctx note "STORAGE: ${estimate}/month | GROWTH: {rate}"
+- ctx note "TRANSFER: ${estimate}/month | EGRESS: {GB_estimate}"
+- ctx note "OPTIMIZATION: {reserved/spot/savings_plan}"
 ```
 
 ## Migration Architecture
@@ -129,21 +129,21 @@ Cost modeling:
 ```
 Migration planning:
 1. ctx create MIGRATE-{from}-to-{to}
-2. ctx add-note "STRATEGY: {big_bang/parallel/gradual}"
-3. ctx add-note "PHASE_{n}: {description} | DURATION: {estimate}"
-4. ctx add-note "ROLLBACK: {point} | PROCEDURE: {steps}"
-5. ctx add-note "VALIDATION: {method} | SUCCESS_CRITERIA: {metrics}"
+2. ctx note "STRATEGY: {big_bang/parallel/gradual}"
+3. ctx note "PHASE_{n}: {description} | DURATION: {estimate}"
+4. ctx note "ROLLBACK: {point} | PROCEDURE: {steps}"
+5. ctx note "VALIDATION: {method} | SUCCESS_CRITERIA: {metrics}"
 ```
 
 ## Architecture Review Checklist
 
 ```
 Review preparation:
-1. ctx add-note "REVIEW: Scalability - {findings}"
-2. ctx add-note "REVIEW: Security - {findings}"
-3. ctx add-note "REVIEW: Reliability - {findings}"
-4. ctx add-note "REVIEW: Maintainability - {findings}"
-5. ctx add-note "REVIEW: Cost - {findings}"
+1. ctx note "REVIEW: Scalability - {findings}"
+2. ctx note "REVIEW: Security - {findings}"
+3. ctx note "REVIEW: Reliability - {findings}"
+4. ctx note "REVIEW: Maintainability - {findings}"
+5. ctx note "REVIEW: Cost - {findings}"
 6. Generate diagram: Architecture overview with components and flows
 ```
 

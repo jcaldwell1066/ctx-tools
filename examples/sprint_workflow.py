@@ -58,7 +58,7 @@ class SprintWorkflow:
             notes.append(f"PR: #{pr_number}")
 
         for note in notes:
-            self.run_ctx(f'add-note "{note}"')
+            self.run_ctx(f'note "{note}"')
 
         # Set initial status
         self.set_phase("new")
@@ -67,12 +67,12 @@ class SprintWorkflow:
         """Update the sprint phase"""
         if phase in self.PHASES:
             emoji = self.PHASES[phase]
-            self.run_ctx(f"set-status {emoji}")
-            self.run_ctx(f'add-note "PHASE: {phase.upper()} - {datetime.now().strftime('%H:%M')}"')
+            self.run_ctx(f"set-state {emoji}")
+            self.run_ctx(f'note "PHASE: {phase.upper()} - {datetime.now().strftime('%H:%M')}"')
 
     def add_technical_note(self, category, content):
         """Add a categorized technical note"""
-        self.run_ctx(f'add-note "{category.upper()}: {content}"')
+        self.run_ctx(f'note "{category.upper()}: {content}"')
 
     def track_pr_status(self, pr_number, status):
         """Track PR status changes"""
@@ -91,7 +91,7 @@ class SprintWorkflow:
     def generate_status_report(self):
         """Generate a status report"""
         output = self.run_ctx("status")
-        notes_output = self.run_ctx("show-notes")
+        notes_output = self.run_ctx("notes")
 
         return f"""
 Sprint Status Report: {self.sprint_id}
