@@ -4,8 +4,11 @@ Unit tests for ctx-tools core ContextManager
 
 import pytest
 from pathlib import Path
+from typing import Any, Dict
+
 from ctx.core import ContextManager
-from ctx.models import ContextState
+from ctx.models import ContextState, Context, Note
+from ctx.plugins import Plugin
 
 
 @pytest.mark.unit
@@ -324,3 +327,36 @@ class TestContextManager:
         assert context.description == "Test persistence"
         assert len(context.notes) == 1
         assert context.notes[0].text == "Test note"
+
+    def test_plugin_modifications_persist(self, temp_storage_dir):
+        """Ensure plugin hook modifications are saved"""
+
+        class ModifyPlugin(Plugin):
+            name = "modify"
+
+            def get_commands(self) -> Dict[str, Any]:
+                return {}
+
+            def on_state_changed(self, context: Context, new_state: ContextState):
+                context.metadata["state_changed"] = True
+
+            def on_note_added(self, context: Context, note: Note):
+                context.metadata["last_note"] = note.text
+
+            def on_context_switched(self, context: Context):
+                context.metadata["switched"] = True
+
+        manager = ContextManager(storage_path=temp_storage_dir)
+        manager.plugin_manager.register(ModifyPlugin())
+
+        manager.create("hook-test")
+        manager.add_note("hook-test", "initial")
+        manager.set_state("hook-test", ContextState.IN_PROGRESS)
+        manager.switch("hook-test")
+
+        new_mgr = ContextManager(storage_path=temp_storage_dir)
+        ctx = new_mgr.get("hook-test")
+
+        assert ctx.metadata.get("state_changed") is True
+        assert ctx.metadata.get("last_note") == "initial"
+        assert ctx.metadata.get("switched") is True
