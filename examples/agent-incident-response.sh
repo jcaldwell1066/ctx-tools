@@ -44,4 +44,4 @@ ctx add-note "PREVENTION: 1) Implement multi-region gateway failover"
 ctx add-note "PREVENTION: 2) Reduce timeout to fail faster (10s)"
 ctx add-note "PREVENTION: 3) Add pre-emptive health checks"
 
-ctx status 
+ctx status

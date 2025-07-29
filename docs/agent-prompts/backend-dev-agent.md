@@ -70,7 +70,7 @@ Before submitting PR:
 1. ctx set-status 👀
 2. ctx add-note "PR: #{pr_number} - {pr_url}"
 3. ctx add-note "CHANGES: {files_changed} files, +{additions}/-{deletions}"
-4. Generate handoff: 
+4. Generate handoff:
    - Create contexts/{JIRA_ID}-handoff.md
    - Include: API contracts, test coverage, deployment notes
 ```
@@ -102,4 +102,4 @@ On completion:
 2. Export context: ctx export {context_name} > archives/{JIRA_ID}.json
 3. Memory relation: {service_name} -> completed_in -> {sprint_id}
 4. ctx close {context_name}
-``` 
+```

@@ -159,4 +159,4 @@ Personal knowledge graph:
    - "What projects used {skill}?"
    - "Who can help with {topic}?"
    - "What resources for {learning_goal}?"
-``` 
+```

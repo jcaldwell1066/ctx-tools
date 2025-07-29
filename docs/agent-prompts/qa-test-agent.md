@@ -120,4 +120,4 @@ Environment-related tracking:
 - ctx add-note "ENV_ISSUE: {component} - {issue_type}"
 - ctx add-note "WORKAROUND: {temporary_solution}"
 - Memory: Track environment-specific issues for pattern recognition
-``` 
+```
