@@ -10,10 +10,13 @@ import subprocess
 from pathlib import Path
 from typing import Dict, Any, List
 
+# Ensure unbuffered output for MCP communication
+sys.stdout.reconfigure(line_buffering=True)
+
 
 class CTXMCPServer:
     """MCP server that exposes ctx functionality"""
-    
+
     def __init__(self):
         self.capabilities = {
             "tools": {
@@ -92,7 +95,7 @@ class CTXMCPServer:
                 }
             }
         }
-    
+
     def run_ctx_command(self, args: List[str]) -> Dict[str, Any]:
         """Run a ctx command and return the result"""
         try:
@@ -102,7 +105,7 @@ class CTXMCPServer:
                 text=True,
                 timeout=30
             )
-            
+
             return {
                 "success": result.returncode == 0,
                 "stdout": result.stdout,
@@ -123,10 +126,10 @@ class CTXMCPServer:
                 "stderr": str(e),
                 "returncode": -1
             }
-    
+
     def handle_tool_call(self, tool_name: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """Handle a tool call"""
-        
+
         if tool_name == "ctx_status":
             result = self.run_ctx_command(["status"])
             return {
@@ -137,7 +140,7 @@ class CTXMCPServer:
                     }
                 ]
             }
-        
+
         elif tool_name == "ctx_list":
             result = self.run_ctx_command(["list"])
             return {
@@ -148,7 +151,7 @@ class CTXMCPServer:
                     }
                 ]
             }
-        
+
         elif tool_name == "ctx_note":
             text = parameters.get("text", "")
             result = self.run_ctx_command(["note", text])
@@ -160,7 +163,7 @@ class CTXMCPServer:
                     }
                 ]
             }
-        
+
         elif tool_name == "ctx_set_state":
             state = parameters.get("state", "active")
             result = self.run_ctx_command(["set-state", state])
@@ -172,14 +175,14 @@ class CTXMCPServer:
                     }
                 ]
             }
-        
+
         elif tool_name == "ctx_create":
             name = parameters.get("name", "")
             description = parameters.get("description", "")
             args = ["create", name]
             if description:
                 args.extend(["-d", description])
-            
+
             result = self.run_ctx_command(args)
             return {
                 "content": [
@@ -189,7 +192,7 @@ class CTXMCPServer:
                     }
                 ]
             }
-        
+
         elif tool_name == "ctx_switch":
             name = parameters.get("name", "")
             result = self.run_ctx_command(["switch", name])
@@ -201,7 +204,7 @@ class CTXMCPServer:
                     }
                 ]
             }
-        
+
         else:
             return {
                 "content": [
@@ -217,12 +220,39 @@ class CTXMCPServer:
 def main():
     """Main MCP server loop"""
     server = CTXMCPServer()
-    
+
     for line in sys.stdin:
         try:
             message = json.loads(line.strip())
-            
-            if message.get("method") == "tools/list":
+
+            # Handle initialization request
+            if message.get("method") == "initialize":
+                response = {
+                    "jsonrpc": "2.0",
+                    "id": message.get("id"),
+                    "result": {
+                        "protocolVersion": "2025-03-26",
+                        "capabilities": {
+                            "tools": {
+                                "listChanged": True
+                            }
+                        },
+                        "serverInfo": {
+                            "name": "ctx-tools",
+                            "version": "2.0.0"
+                        },
+                        "instructions": "CTX context management tools for Cursor integration"
+                    }
+                }
+                print(json.dumps(response))
+                sys.stdout.flush()
+
+            # Handle initialized notification (client is ready)
+            elif message.get("method") == "notifications/initialized":
+                # No response needed for notifications
+                continue
+
+            elif message.get("method") == "tools/list":
                 response = {
                     "jsonrpc": "2.0",
                     "id": message.get("id"),
@@ -238,21 +268,23 @@ def main():
                     }
                 }
                 print(json.dumps(response))
-                
+                sys.stdout.flush()
+
             elif message.get("method") == "tools/call":
                 params = message.get("params", {})
                 tool_name = params.get("name")
                 arguments = params.get("arguments", {})
-                
+
                 result = server.handle_tool_call(tool_name, arguments)
-                
+
                 response = {
                     "jsonrpc": "2.0",
                     "id": message.get("id"),
                     "result": result
                 }
                 print(json.dumps(response))
-                
+                sys.stdout.flush()
+
         except json.JSONDecodeError:
             continue
         except Exception as e:
@@ -265,6 +297,7 @@ def main():
                 }
             }
             print(json.dumps(error_response))
+            sys.stdout.flush()
 
 
 if __name__ == "__main__":
