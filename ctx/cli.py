@@ -4,6 +4,7 @@ Command-line interface for ctx
 
 import click
 import sys
+import os
 from pathlib import Path
 from typing import Optional, List
 from datetime import datetime
@@ -16,7 +17,7 @@ from .formatters import (
     format_context_status,
     format_notes,
     format_stack,
-    format_search_results
+    format_search_results,
 )
 
 
@@ -28,12 +29,16 @@ def get_ctx_manager() -> ContextManager:
     """Get or create the context manager instance"""
     global _ctx_manager
     if _ctx_manager is None:
-        _ctx_manager = ContextManager()
+        env_path = os.environ.get("CTX_STORAGE_PATH")
+        if env_path:
+            _ctx_manager = ContextManager(storage_path=Path(env_path))
+        else:
+            _ctx_manager = ContextManager()
     return _ctx_manager
 
 
 @click.group(invoke_without_command=True)
-@click.option('--version', '-v', is_flag=True, help='Show version')
+@click.option("--version", "-v", is_flag=True, help="Show version")
 @click.pass_context
 def cli(ctx, version):
     """CTX - Context Management System
@@ -52,19 +57,18 @@ def cli(ctx, version):
 
 # Context lifecycle commands
 
+
 @cli.command()
-@click.argument('name')
-@click.option('--description', '-d', help='Context description')
-@click.option('--tags', '-t', multiple=True, help='Context tags')
+@click.argument("name")
+@click.option("--description", "-d", help="Context description")
+@click.option("--tags", "-t", multiple=True, help="Context tags")
 def create(name: str, description: str, tags: tuple):
     """Create a new context"""
     manager = get_ctx_manager()
 
     try:
         context = manager.create(
-            name=name,
-            description=description or "",
-            tags=list(tags)
+            name=name, description=description or "", tags=list(tags)
         )
         click.echo(f"✅ Created context: {name}")
 
@@ -76,11 +80,16 @@ def create(name: str, description: str, tags: tuple):
 
 
 @cli.command()
-@click.option('--all', '-a', is_flag=True, help='Show all contexts including completed')
-@click.option('--state', '-s', help='Filter by state')
-@click.option('--tag', help='Filter by tag')
-@click.option('--format', '-f', type=click.Choice(['table', 'simple', 'json']),
-              default='table', help='Output format')
+@click.option("--all", "-a", is_flag=True, help="Show all contexts including completed")
+@click.option("--state", "-s", help="Filter by state")
+@click.option("--tag", help="Filter by tag")
+@click.option(
+    "--format",
+    "-f",
+    type=click.Choice(["table", "simple", "json"]),
+    default="table",
+    help="Output format",
+)
 def list(all: bool, state: str, tag: str, format: str):
     """List all contexts"""
     manager = get_ctx_manager()
@@ -90,8 +99,11 @@ def list(all: bool, state: str, tag: str, format: str):
     # Apply filters
     if not all:
         # Hide completed/cancelled by default
-        contexts = [c for c in contexts
-                    if c.state not in [ContextState.COMPLETED, ContextState.CANCELLED]]
+        contexts = [
+            c
+            for c in contexts
+            if c.state not in [ContextState.COMPLETED, ContextState.CANCELLED]
+        ]
 
     if state:
         try:
@@ -114,7 +126,7 @@ def list(all: bool, state: str, tag: str, format: str):
 
 
 @cli.command()
-@click.argument('name')
+@click.argument("name")
 def switch(name: str):
     """Switch to a different context"""
     manager = get_ctx_manager()
@@ -128,8 +140,8 @@ def switch(name: str):
 
 
 @cli.command()
-@click.argument('name', required=False)
-@click.option('--verbose', '-v', is_flag=True, help='Show detailed information')
+@click.argument("name", required=False)
+@click.option("--verbose", "-v", is_flag=True, help="Show detailed information")
 def status(name: Optional[str], verbose: bool):
     """Show context status (current if no name given)"""
     manager = get_ctx_manager()
@@ -142,24 +154,24 @@ def status(name: Optional[str], verbose: bool):
     else:
         context = manager.get_active()
         if not context:
-            click.echo(
-                "❌ No active context. Create one with: ctx create <name>")
+            click.echo("❌ No active context. Create one with: ctx create <name>")
             sys.exit(1)
 
     # Get plugin status info
     plugin_info = manager.plugin_manager.get_status_info(context)
 
-    output = format_context_status(context,
-                                   is_active=(context.name ==
-                                              manager.data.get("active")),
-                                   verbose=verbose,
-                                   plugin_info=plugin_info)
+    output = format_context_status(
+        context,
+        is_active=(context.name == manager.data.get("active")),
+        verbose=verbose,
+        plugin_info=plugin_info,
+    )
     click.echo(output)
 
 
 @cli.command()
-@click.argument('name')
-@click.confirmation_option(prompt='Are you sure you want to delete this context?')
+@click.argument("name")
+@click.confirmation_option(prompt="Are you sure you want to delete this context?")
 def delete(name: str):
     """Delete a context"""
     manager = get_ctx_manager()
@@ -174,10 +186,11 @@ def delete(name: str):
 
 # State management commands
 
-@cli.command('set-state')
-@click.argument('state', required=False)
-@click.option('--emoji', '-e', help='Custom emoji (for custom state)')
-@click.option('--context', '-c', help='Context name (default: active)')
+
+@cli.command("set-state")
+@click.argument("state", required=False)
+@click.option("--emoji", "-e", help="Custom emoji (for custom state)")
+@click.option("--context", "-c", help="Context name (default: active)")
 def set_state(state: Optional[str], emoji: str, context: str):
     """Set context state
 
@@ -225,10 +238,11 @@ def set_state(state: Optional[str], emoji: str, context: str):
 
 # Note management commands
 
-@cli.command('note')
-@click.argument('text', nargs=-1, required=True)
-@click.option('--tags', '-t', multiple=True, help='Note tags')
-@click.option('--context', '-c', help='Context name (default: active)')
+
+@cli.command("note")
+@click.argument("text", nargs=-1, required=True)
+@click.option("--tags", "-t", multiple=True, help="Note tags")
+@click.option("--context", "-c", help="Context name (default: active)")
 def add_note(text: tuple, tags: tuple, context: str):
     """Add a note to context"""
     manager = get_ctx_manager()
@@ -250,10 +264,10 @@ def add_note(text: tuple, tags: tuple, context: str):
         sys.exit(1)
 
 
-@cli.command('show-notes')
-@click.option('--context', '-c', help='Context name (default: active)')
-@click.option('--limit', '-n', type=int, help='Limit number of notes shown')
-@click.option('--reverse', '-r', is_flag=True, help='Show oldest first')
+@cli.command("show-notes")
+@click.option("--context", "-c", help="Context name (default: active)")
+@click.option("--limit", "-n", type=int, help="Limit number of notes shown")
+@click.option("--reverse", "-r", is_flag=True, help="Show oldest first")
 def show_notes(context: str, limit: int, reverse: bool):
     """Show context notes"""
     manager = get_ctx_manager()
@@ -285,9 +299,9 @@ def show_notes(context: str, limit: int, reverse: bool):
     click.echo(output)
 
 
-@cli.command('clear-notes')
-@click.option('--context', '-c', help='Context name (default: active)')
-@click.confirmation_option(prompt='Clear all notes?')
+@cli.command("clear-notes")
+@click.option("--context", "-c", help="Context name (default: active)")
+@click.confirmation_option(prompt="Clear all notes?")
 def clear_notes(context: str):
     """Clear all notes from context"""
     manager = get_ctx_manager()
@@ -307,8 +321,9 @@ def clear_notes(context: str):
 
 # Stack operations
 
+
 @cli.command()
-@click.argument('name')
+@click.argument("name")
 def push(name: str):
     """Push current context and switch to another"""
     manager = get_ctx_manager()
@@ -353,10 +368,16 @@ def stack():
 
 # Search and filter
 
+
 @cli.command()
-@click.argument('query')
-@click.option('--format', '-f', type=click.Choice(['simple', 'detailed']),
-              default='simple', help='Output format')
+@click.argument("query")
+@click.option(
+    "--format",
+    "-f",
+    type=click.Choice(["simple", "detailed"]),
+    default="simple",
+    help="Output format",
+)
 def search(query: str, format: str):
     """Search contexts by name, description, or notes"""
     manager = get_ctx_manager()
@@ -372,9 +393,12 @@ def search(query: str, format: str):
 
 # Import/Export
 
+
 @cli.command()
-@click.argument('name')
-@click.option('--output', '-o', type=click.Path(), help='Output file (default: <name>.json)')
+@click.argument("name")
+@click.option(
+    "--output", "-o", type=click.Path(), help="Output file (default: <name>.json)"
+)
 def export(name: str, output: str):
     """Export a context to file"""
     manager = get_ctx_manager()
@@ -388,7 +412,8 @@ def export(name: str, output: str):
 
         # Write to file
         import json
-        with open(output, 'w') as f:
+
+        with open(output, "w") as f:
             json.dump(data, f, indent=2)
 
         click.echo(f"✅ Exported context '{name}' to {output}")
@@ -397,16 +422,17 @@ def export(name: str, output: str):
         sys.exit(1)
 
 
-@cli.command('import')
-@click.argument('file', type=click.Path(exists=True))
-@click.option('--overwrite', is_flag=True, help='Overwrite if exists')
+@cli.command("import")
+@click.argument("file", type=click.Path(exists=True))
+@click.option("--overwrite", is_flag=True, help="Overwrite if exists")
 def import_context(file: str, overwrite: bool):
     """Import a context from file"""
     manager = get_ctx_manager()
 
     try:
         import json
-        with open(file, 'r') as f:
+
+        with open(file, "r") as f:
             data = json.load(f)
 
         manager.import_context(data, overwrite)
@@ -418,8 +444,9 @@ def import_context(file: str, overwrite: bool):
 
 # PS1 integration
 
+
 @cli.command()
-@click.option('--format', '-f', default='{name} {emoji}', help='PS1 format string')
+@click.option("--format", "-f", default="{name} {emoji}", help="PS1 format string")
 def ps1(format: str):
     """Get PS1 prompt info"""
     manager = get_ctx_manager()
@@ -433,11 +460,10 @@ def ps1(format: str):
 
     # Format PS1
     ps1 = format.format(
-        name=context.name[:15] +
-        "..." if len(context.name) > 18 else context.name,
+        name=context.name[:15] + "..." if len(context.name) > 18 else context.name,
         emoji=context.emoji,
         state=context.state.value,
-        notes=str(context.note_count)
+        notes=str(context.note_count),
     )
 
     # Add plugin info
@@ -449,13 +475,14 @@ def ps1(format: str):
 
 # Plugin management
 
+
 @cli.group()
 def plugin():
     """Plugin management commands"""
     pass
 
 
-@plugin.command('list')
+@plugin.command("list")
 def plugin_list():
     """List installed plugins"""
     manager = get_ctx_manager()
@@ -470,7 +497,7 @@ def plugin_list():
         click.echo(f"  {p.name:<20} {p.version:<10} {p.description}")
 
 
-@plugin.command('commands')
+@plugin.command("commands")
 def plugin_commands():
     """Show plugin commands"""
     manager = get_ctx_manager()
@@ -487,14 +514,14 @@ def plugin_commands():
 
 
 # Aliases for common operations
-cli.add_command(switch, name='sw')
-cli.add_command(list, name='ls')
-cli.add_command(status, name='st')
-cli.add_command(add_note, name='n')
-cli.add_command(add_note, name='add-note')
-cli.add_command(show_notes, name='notes')
-cli.add_command(set_state, name='set-status')
+cli.add_command(switch, name="sw")
+cli.add_command(list, name="ls")
+cli.add_command(status, name="st")
+cli.add_command(add_note, name="n")
+cli.add_command(add_note, name="add-note")
+cli.add_command(show_notes, name="notes")
+cli.add_command(set_state, name="set-status")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli()
