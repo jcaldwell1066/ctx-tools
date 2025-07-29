@@ -137,13 +137,16 @@ class ContextManager:
             self.stack.push(self.data["active"])
         
         self.data["active"] = name
-        self._save()
-        
+
         context = self.get(name)
-        
-        # Notify plugins
+
+        # Notify plugins before persisting so modifications are saved
         self.plugin_manager.on_context_switched(context)
-        
+
+        # Persist any plugin modifications
+        self.data["contexts"][name] = context.to_dict()
+        self._save()
+
         return context
     
     def get_active(self) -> Optional[Context]:
@@ -204,11 +207,13 @@ class ContextManager:
             raise ValueError(f"Context '{name}' not found")
         
         context.set_state(state, custom_emoji)
+
+        # Notify plugins before persisting so modifications are saved
+        self.plugin_manager.on_state_changed(context, state)
+
+        # Persist any plugin modifications
         self.data["contexts"][name] = context.to_dict()
         self._save()
-        
-        # Notify plugins
-        self.plugin_manager.on_state_changed(context, state)
     
     # Note management
     
@@ -225,11 +230,13 @@ class ContextManager:
             raise ValueError(f"Context '{name}' not found")
         
         note = context.add_note(text, tags)
+
+        # Notify plugins before persisting so modifications are saved
+        self.plugin_manager.on_note_added(context, note)
+
+        # Persist any plugin modifications
         self.data["contexts"][name] = context.to_dict()
         self._save()
-        
-        # Notify plugins
-        self.plugin_manager.on_note_added(context, note)
     
     def clear_notes(self, name: str):
         """Clear all notes from a context
