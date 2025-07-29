@@ -15,7 +15,7 @@ def read_long_description():
 
 setup(
     name='ctx-manager',
-    version='2.0.0',
+    version='2.0.1',
     author='CTX Development Team',
     author_email='',
     description='A modular, extensible context management system',

@@ -1,8 +1,10 @@
 """
-CTX - A modular, extensible context management system
+CTX - Context Management System
+
+A modular, extensible tool for managing development contexts.
 """
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 __author__ = "CTX Development Team"
 
 from .core import ContextManager

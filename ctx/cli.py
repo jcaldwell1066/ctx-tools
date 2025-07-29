@@ -50,6 +50,9 @@ def cli(ctx, version):
         click.echo(f"ctx version {__version__}")
         ctx.exit()
 
+    # Debug: Show what Click thinks the subcommand is
+    # print(f"DEBUG: invoked_subcommand = {ctx.invoked_subcommand}")
+
     # If no subcommand, show status
     if ctx.invoked_subcommand is None:
         ctx.invoke(status)
@@ -64,6 +67,8 @@ def cli(ctx, version):
 @click.option("--tags", "-t", multiple=True, help="Context tags")
 def create(name: str, description: str, tags: tuple):
     """Create a new context"""
+    print(
+        f"DEBUG: create() called with name='{name}', description='{description}', tags={tags}")
     manager = get_ctx_manager()
 
     try:
@@ -92,6 +97,8 @@ def create(name: str, description: str, tags: tuple):
 )
 def list(all: bool, state: str, tag: str, format: str):
     """List all contexts"""
+    print(
+        f"DEBUG: list() called with all={all}, state='{state}', tag='{tag}', format='{format}'")
     manager = get_ctx_manager()
 
     contexts = manager.list()
@@ -154,7 +161,8 @@ def status(name: Optional[str], verbose: bool):
     else:
         context = manager.get_active()
         if not context:
-            click.echo("❌ No active context. Create one with: ctx create <name>")
+            click.echo(
+                "❌ No active context. Create one with: ctx create <name>")
             sys.exit(1)
 
     # Get plugin status info
@@ -460,7 +468,8 @@ def ps1(format: str):
 
     # Format PS1
     ps1 = format.format(
-        name=context.name[:15] + "..." if len(context.name) > 18 else context.name,
+        name=context.name[:15] +
+        "..." if len(context.name) > 18 else context.name,
         emoji=context.emoji,
         state=context.state.value,
         notes=str(context.note_count),
@@ -513,14 +522,42 @@ def plugin_commands():
             click.echo(f"  {cmd_name:<20} {cmd_info.get('help', '')}")
 
 
-# Aliases for common operations
-cli.add_command(switch, name="sw")
-cli.add_command(list, name="ls")
-cli.add_command(status, name="st")
-cli.add_command(add_note, name="n")
-cli.add_command(add_note, name="add-note")
-cli.add_command(show_notes, name="notes")
-cli.add_command(set_state, name="set-status")
+# Clean aliases for common operations (no duplicates)
+@cli.command("sw")
+@click.argument("name")
+def sw(name: str):
+    """Switch to a different context (alias for switch)"""
+    ctx = click.get_current_context()
+    ctx.invoke(switch, name=name)
+
+
+@cli.command("ls")
+@click.option("--all", "-a", is_flag=True, help="Show all contexts including completed")
+@click.option("--state", "-s", help="Filter by state")
+@click.option("--tag", help="Filter by tag")
+@click.option("--format", "-f", type=click.Choice(["table", "simple", "json"]), default="table", help="Output format")
+def ls(all: bool, state: str, tag: str, format: str):
+    """List all contexts (alias for list)"""
+    ctx = click.get_current_context()
+    ctx.invoke(list, all=all, state=state, tag=tag, format=format)
+
+
+@cli.command("st")
+@click.argument("name", required=False)
+def st(name: str):
+    """Show context status (alias for status)"""
+    ctx = click.get_current_context()
+    ctx.invoke(status, name=name)
+
+
+@cli.command("n")
+@click.argument("text", nargs=-1, required=True)
+@click.option("--tags", "-t", multiple=True, help="Note tags")
+@click.option("--context", "-c", help="Context name (default: active)")
+def n(text: tuple, tags: tuple, context: str):
+    """Add a note to context (alias for note)"""
+    ctx = click.get_current_context()
+    ctx.invoke(add_note, text=text, tags=tags, context=context)
 
 
 if __name__ == "__main__":
