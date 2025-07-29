@@ -160,7 +160,15 @@ cython_debug/
 .idea/
 
 # VS Code
-.vscode/
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+.vscode/*.code-workspace
+
+# Allow project-specific VSCode configs for ctx integration
+!.vscode/mcp.json
+!.vscode/tasks.json
+!.vscode/settings.json
 
 # macOS
 .DS_Store

@@ -1,0 +1,37 @@
+{
+    // CTX-Tools Project Settings
+    "python.defaultInterpreterPath": "./venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+    // Terminal integration for ctx
+    "terminal.integrated.shellIntegration.enabled": true,
+    "terminal.integrated.env.linux": {
+        "CTX_PROJECT": "ctx-tools-dev",
+        "CTX_AUTO_ACTIVATE": "true"
+    },
+    // Files and workspace
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/venv": false,
+        "**/.ctx": false
+    },
+    // Python specific
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    // Editor settings for development
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    // CTX integration hints for Cursor
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#007acc",
+        "statusBar.foreground": "#ffffff"
+    },
+    // Git integration
+    "git.openRepositoryInParentFolders": "always",
+    "cursorpyright.analysis.typeCheckingMode": "basic"
+}
