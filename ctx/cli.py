@@ -68,7 +68,8 @@ def cli(ctx, version):
 def create(name: str, description: str, tags: tuple):
     """Create a new context"""
     print(
-        f"DEBUG: create() called with name='{name}', description='{description}', tags={tags}")
+        f"DEBUG: create() called with name='{name}', description='{description}', tags={tags}"
+    )
     manager = get_ctx_manager()
 
     try:
@@ -84,7 +85,7 @@ def create(name: str, description: str, tags: tuple):
         sys.exit(1)
 
 
-@cli.command()
+@cli.command(name="list")
 @click.option("--all", "-a", is_flag=True, help="Show all contexts including completed")
 @click.option("--state", "-s", help="Filter by state")
 @click.option("--tag", help="Filter by tag")
@@ -95,10 +96,11 @@ def create(name: str, description: str, tags: tuple):
     default="table",
     help="Output format",
 )
-def list(all: bool, state: str, tag: str, format: str):
+def list_contexts(all: bool, state: str, tag: str, format: str):
     """List all contexts"""
     print(
-        f"DEBUG: list() called with all={all}, state='{state}', tag='{tag}', format='{format}'")
+        f"DEBUG: list() called with all={all}, state='{state}', tag='{tag}', format='{format}'"
+    )
     manager = get_ctx_manager()
 
     contexts = manager.list()
@@ -161,8 +163,7 @@ def status(name: Optional[str], verbose: bool):
     else:
         context = manager.get_active()
         if not context:
-            click.echo(
-                "❌ No active context. Create one with: ctx create <name>")
+            click.echo("❌ No active context. Create one with: ctx create <name>")
             sys.exit(1)
 
     # Get plugin status info
@@ -305,6 +306,16 @@ def show_notes(context: str, limit: int, reverse: bool):
 
     output = format_notes(note_list, ctx_name)
     click.echo(output)
+
+
+@cli.command("notes")
+@click.option("--context", "-c", help="Context name (default: active)")
+@click.option("--limit", "-n", type=int, help="Limit number of notes shown")
+@click.option("--reverse", "-r", is_flag=True, help="Show oldest first")
+def notes(context: str, limit: int, reverse: bool):
+    """Alias for show-notes"""
+    ctx = click.get_current_context()
+    ctx.invoke(show_notes, context=context, limit=limit, reverse=reverse)
 
 
 @cli.command("clear-notes")
@@ -468,8 +479,7 @@ def ps1(format: str):
 
     # Format PS1
     ps1 = format.format(
-        name=context.name[:15] +
-        "..." if len(context.name) > 18 else context.name,
+        name=context.name[:15] + "..." if len(context.name) > 18 else context.name,
         emoji=context.emoji,
         state=context.state.value,
         notes=str(context.note_count),
@@ -535,11 +545,17 @@ def sw(name: str):
 @click.option("--all", "-a", is_flag=True, help="Show all contexts including completed")
 @click.option("--state", "-s", help="Filter by state")
 @click.option("--tag", help="Filter by tag")
-@click.option("--format", "-f", type=click.Choice(["table", "simple", "json"]), default="table", help="Output format")
+@click.option(
+    "--format",
+    "-f",
+    type=click.Choice(["table", "simple", "json"]),
+    default="table",
+    help="Output format",
+)
 def ls(all: bool, state: str, tag: str, format: str):
     """List all contexts (alias for list)"""
     ctx = click.get_current_context()
-    ctx.invoke(list, all=all, state=state, tag=tag, format=format)
+    ctx.invoke(list_contexts, all=all, state=state, tag=tag, format=format)
 
 
 @cli.command("st")
