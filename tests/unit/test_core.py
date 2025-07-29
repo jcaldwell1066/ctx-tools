@@ -81,7 +81,8 @@ class TestContextManager:
         assert "completed-context" in context_names
         
         # Should be sorted by updated_at (most recent first)
-        assert contexts[0].name == "completed-context"  # Most recently created/updated
+        # context-1 should be first because notes were added to it last
+        assert contexts[0].name == "context-1"  # Most recently updated (notes added)
     
     def test_switch_context(self, populated_manager):
         """Test switching between contexts"""
