@@ -11,7 +11,7 @@ agent_stack:
   context_layer: ctx
   memory_layer: mcp_memory_docker
   execution_layer: mcp_filesystem/browser/terminal
-  
+
 workflow:
   1. Context establishment (ctx)
   2. Memory retrieval (mcp_memory)
@@ -92,7 +92,7 @@ Based on patterns:
 ```
 Context to Memory mapping:
 - ctx context -> memory entity
-- ctx notes -> memory observations  
+- ctx notes -> memory observations
 - ctx status -> memory relations
 
 Query examples:
@@ -152,16 +152,16 @@ class AgenticStateMachine:
         "deployment": ["monitoring", "rollback"],
         "monitoring": ["completed", "incident"]
     }
-    
+
     def transition(self, current_ctx):
         current_state = self.get_state_from_emoji(current_ctx.emoji)
         possible_next = self.states[current_state]
-        
+
         # Consult memory for best transition
         memory_recommendation = memory_search(
             f"best transition from {current_state} given {current_ctx.notes[-1]}"
         )
-        
+
         return self.apply_transition(memory_recommendation)
 ```
 
@@ -172,7 +172,7 @@ class AgenticStateMachine:
 ```
 Triggers:
 - New JIRA ticket -> Create context
-- PR opened -> Create review context  
+- PR opened -> Create review context
 - Incident alert -> Create incident context
 ```
 
@@ -278,4 +278,4 @@ Track effectiveness:
 - Memory query hit rate
 - Pattern application success rate
 - Time to resolution by context type
-``` 
+```

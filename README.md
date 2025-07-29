@@ -16,8 +16,9 @@ A modular, extensible command-line tool for managing development contexts, track
 ## Installation
 
 ```bash
-# Install from source
-cd ctx-refactor
+# Clone the repository and install from source
+git clone https://github.com/yourusername/ctx-tools.git
+cd ctx-tools
 pip install -e .
 
 # Or install with development dependencies
@@ -180,7 +181,7 @@ class MyPlugin(Plugin):
     name = "my_plugin"
     description = "My custom plugin"
     version = "1.0.0"
-    
+
     def get_commands(self):
         return {
             "my-command": {
@@ -188,11 +189,11 @@ class MyPlugin(Plugin):
                 "handler": self.my_handler
             }
         }
-    
+
     def on_context_created(self, context: Context):
         # React to context creation
         context.add_note(f"Initialized by {self.name}")
-    
+
     def my_handler(self, context: Context, **kwargs):
         return "Command executed!"
 ```
@@ -367,4 +368,4 @@ ctx list --tag backend
 
 ## License
 
-MIT License - see LICENSE file for details. 
+MIT License - see LICENSE file for details.

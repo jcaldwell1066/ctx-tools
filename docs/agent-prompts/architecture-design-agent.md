@@ -160,4 +160,4 @@ Building pattern knowledge:
    - {pattern} -> solves -> {problem_type}
    - {pattern} -> requires -> {prerequisite}
    - {pattern} -> conflicts_with -> {other_pattern}
-``` 
+```

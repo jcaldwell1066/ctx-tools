@@ -38,4 +38,4 @@ ctx add-note "CHANGES: 12 files, +847/-123"
 
 # Show current status
 echo -e "\n📊 Current Context Status:"
-ctx status 
+ctx status

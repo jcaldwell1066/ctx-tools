@@ -10,7 +10,7 @@ This directory contains prompt templates and integration patterns for using ctx 
 - **[Backend Developer](./backend-dev-agent.md)** - Service implementation, testing, code review workflows
 - **[Architecture Design](./architecture-design-agent.md)** - ADRs, pattern selection, system design
 
-### Operations Agents  
+### Operations Agents
 - **[DevOps/SRE](./devops-sre-agent.md)** - Incident response, deployments, infrastructure changes
 - **[QA Testing](./qa-test-agent.md)** - Test execution, defect tracking, regression management
 
@@ -90,4 +90,4 @@ See `/examples` directory for practical demonstrations:
 - Custom plugins for domain-specific workflows
 - Integration with external systems (JIRA, GitHub)
 - Automated context creation from webhooks
-- Context templates from successful patterns 
+- Context templates from successful patterns

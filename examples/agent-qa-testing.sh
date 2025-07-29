@@ -38,4 +38,4 @@ ctx add-note "REGRESSION: Authentication suite - 48/50 passed"
 ctx add-note "FLAKY: TC_045 - 30% failure rate over 10 runs"
 
 # Show status
-ctx status 
+ctx status

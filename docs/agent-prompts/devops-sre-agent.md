@@ -143,4 +143,4 @@ Alert correlation:
 - ctx add-note "CORRELATION: {alert1} -> {alert2} (lag: {seconds}s)"
 - Memory: Build alert correlation graph
 - ctx add-note "PATTERN: {pattern_name} detected, applying runbook {id}"
-``` 
+```
