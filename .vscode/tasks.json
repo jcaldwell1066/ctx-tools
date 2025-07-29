@@ -1,0 +1,125 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ctx: Show Status",
+      "type": "shell",
+      "command": "ctx",
+      "args": ["status"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ctx: Add Note",
+      "type": "shell",
+      "command": "ctx",
+      "args": ["note", "${input:noteText}"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ctx: Set State - In Progress",
+      "type": "shell",
+      "command": "ctx",
+      "args": ["set-state", "in-progress"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ctx: Set State - In Review",
+      "type": "shell",
+      "command": "ctx",
+      "args": ["set-state", "in-review"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ctx: Set State - Completed",
+      "type": "shell",
+      "command": "ctx",
+      "args": ["set-state", "completed"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "ctx: List Contexts",
+      "type": "shell",
+      "command": "ctx",
+      "args": ["list"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Install ctx-tools",
+      "type": "shell",
+      "command": "python3",
+      "args": ["install_ctx.py"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run ctx tests",
+      "type": "shell",
+      "command": "python3",
+      "args": ["-m", "pytest", "-v"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "noteText",
+      "description": "Enter note text",
+      "default": "Working on ctx-tools development",
+      "type": "promptString"
+    }
+  ]
+}

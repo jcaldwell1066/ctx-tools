@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "ctx-tools": {
+      "command": "python3",
+      "args": [
+        "${workspaceFolder}/cursor_ctx_integration.py"
+      ],
+      "env": {
+        "CTX_PROJECT": "ctx-tools-dev"
+      }
+    }
+  }
+}

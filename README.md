@@ -12,18 +12,7 @@ A modular, extensible command-line tool for managing development contexts, track
 - **PS1 Integration**: Display context info in your shell prompt
 - **Search & Filter**: Find contexts by name, content, state, or tags
 - **Import/Export**: Share contexts between systems
-
-## Installation
-
-```bash
-# Clone the repository and install from source
-git clone https://github.com/yourusername/ctx-tools.git
-cd ctx-tools
-pip install -e .
-
-# Or install with development dependencies
-pip install -e ".[dev]"
-```
+- **🤖 AI Agent Integration**: Full MCP support for Cursor IDE and agent workflows
 
 ## Developer Onboarding
 
@@ -32,20 +21,44 @@ New contributors can read [`docs/developer-onboarding.md`](docs/developer-onboar
 ## Quick Start
 
 ```bash
+# Install CTX tools
+python3 install_ctx.py
+
 # Create a new context
 ctx create my-project --description "Working on new feature"
 
 # Add a note
 ctx note "Started implementing user authentication"
 
-# Switch between contexts
-ctx switch other-project
-
-# List all contexts
-ctx list
+# Update state
+ctx set-state in-progress
 
 # Show current context status
 ctx status
+```
+
+## 🤖 AI Agent & Cursor Integration
+
+For comprehensive setup with AI agents, Cursor IDE, and MCP integration, see:
+
+**[📖 Comprehensive Agentic Integration Guide](docs/AGENTIC_INTEGRATION.md)**
+
+This guide covers:
+- Cursor IDE integration with MCP tools
+- Agent workflow patterns (sprint management, incident response, development)
+- Memory server synchronization
+- Production deployment patterns
+- Multi-agent coordination
+
+### Quick Integration Test
+
+```bash
+# Test agentic integration
+ctx create test-integration --description "Testing AI agent setup"
+ctx set-state in-progress
+ctx note "Integration test: MCP tools working"
+
+# In Cursor chat, use: ctx_status, ctx_list, ctx_note
 ```
 
 ## Core Commands
