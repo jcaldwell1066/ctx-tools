@@ -50,7 +50,7 @@ class SprintWorkflow:
         # Add initial metadata
         notes = [
             f"SPRINT: {self.sprint_id}",
-                            f"JIRA: {jira_url or f'https://jira.example.com/browse/{self.sprint_id}'}",
+            f"JIRA: {jira_url or 'https://jira.example.com/browse/' + self.sprint_id}",
             f"CREATED: {datetime.now().strftime('%Y-%m-%d %H:%M')}"
         ]
 
