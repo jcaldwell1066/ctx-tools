@@ -3,10 +3,9 @@
     "ctx-tools": {
       "command": "python3",
       "args": [
-        "/home/jcaldwell/projects/active/ctx-tools/cursor_ctx_integration.py"
+        "${workspaceFolder}/cursor_ctx_integration.py"
       ],
       "env": {
-        "PATH": "/home/jcaldwell/.local/bin:/usr/bin:/bin",
         "CTX_PROJECT": "ctx-tools-dev"
       }
     }
