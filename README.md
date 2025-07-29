@@ -37,10 +37,6 @@ ctx set-state in-progress
 ctx status
 ```
 
-## Developer Onboarding
-
-New contributors can read [`docs/developer-onboarding.md`](docs/developer-onboarding.md) for a concise introduction to CTX and how humans and AI agents share context.
-
 ## 🤖 AI Agent & Cursor Integration
 
 For comprehensive setup with AI agents, Cursor IDE, and MCP integration, see:
