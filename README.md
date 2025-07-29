@@ -25,6 +25,10 @@ pip install -e .
 pip install -e ".[dev]"
 ```
 
+## Developer Onboarding
+
+New contributors can read [`docs/developer-onboarding.md`](docs/developer-onboarding.md) for a concise introduction to CTX and how humans and AI agents share context.
+
 ## Quick Start
 
 ```bash
