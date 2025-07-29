@@ -15,11 +15,11 @@ primary_tools:
 ```
 Morning initialization:
 1. ctx create daily-{YYYY-MM-DD}
-2. ctx set-status ☀️
+2. ctx set-state ☀️
 3. Daily setup:
-   - ctx add-note "FOCUS: {main_priority_today}"
-   - ctx add-note "MEETINGS: {count} scheduled | BLOCKS: {deep_work_blocks}"
-   - ctx add-note "ENERGY: {high/medium/low} | MOOD: {emoji}"
+   - ctx note "FOCUS: {main_priority_today}"
+   - ctx note "MEETINGS: {count} scheduled | BLOCKS: {deep_work_blocks}"
+   - ctx note "ENERGY: {high/medium/low} | MOOD: {emoji}"
 ```
 
 ## Task Management Prompts
@@ -27,16 +27,16 @@ Morning initialization:
 ### 1. Task Capture
 ```
 Quick task entry:
-- ctx add-note "TODO: {task_description} | DUE: {date} | EST: {time_estimate}"
-- ctx add-note "CONTEXT: @{location} #{project} !{priority}"
+- ctx note "TODO: {task_description} | DUE: {date} | EST: {time_estimate}"
+- ctx note "CONTEXT: @{location} #{project} !{priority}"
 - Memory: Link task to project entity
 ```
 
 ### 2. Time Blocking
 ```
 Time block management:
-- ctx add-note "BLOCK: {start_time}-{end_time} | {task_type} | {description}"
-- ctx add-note "COMPLETED: {actual_time} | QUALITY: {1-5} | INTERRUPTIONS: {count}"
+- ctx note "BLOCK: {start_time}-{end_time} | {task_type} | {description}"
+- ctx note "COMPLETED: {actual_time} | QUALITY: {1-5} | INTERRUPTIONS: {count}"
 - Memory: Track productivity patterns by time of day
 ```
 
@@ -44,9 +44,9 @@ Time block management:
 ```
 Project context:
 - ctx create project-{name}
-- ctx add-note "GOAL: {outcome} | DEADLINE: {date}"
-- ctx add-note "MILESTONE: {name} - {status} - {completion}%"
-- ctx add-note "BLOCKER: {description} | NEED: {required_action}"
+- ctx note "GOAL: {outcome} | DEADLINE: {date}"
+- ctx note "MILESTONE: {name} - {status} - {completion}%"
+- ctx note "BLOCKER: {description} | NEED: {required_action}"
 ```
 
 ## Learning Context
@@ -54,11 +54,11 @@ Project context:
 ```
 Learning session tracking:
 1. ctx create learn-{topic}
-2. ctx set-status 📚
+2. ctx set-state 📚
 3. Knowledge capture:
-   - ctx add-note "SOURCE: {book/article/video} - {url/reference}"
-   - ctx add-note "INSIGHT: {key_learning}"
-   - ctx add-note "ACTION: {how_to_apply}"
+   - ctx note "SOURCE: {book/article/video} - {url/reference}"
+   - ctx note "INSIGHT: {key_learning}"
+   - ctx note "ACTION: {how_to_apply}"
    - Memory: Create knowledge entity with connections
 ```
 
@@ -79,10 +79,10 @@ Weekly review process:
 1. ctx create weekly-review-{week_number}
 2. Accomplishments:
    - ctx list | grep "✅" > completed_tasks.tmp
-   - ctx add-note "WINS: {top_3_accomplishments}"
-   - ctx add-note "METRICS: {tasks_completed}/{tasks_planned}"
+   - ctx note "WINS: {top_3_accomplishments}"
+   - ctx note "METRICS: {tasks_completed}/{tasks_planned}"
 3. Planning:
-   - ctx add-note "NEXT_WEEK: {top_3_priorities}"
+   - ctx note "NEXT_WEEK: {top_3_priorities}"
    - Memory: Analyze productivity patterns
 ```
 
@@ -90,9 +90,9 @@ Weekly review process:
 
 ```
 Wellness context:
-- ctx add-note "SLEEP: {hours}h | QUALITY: {1-5}"
-- ctx add-note "EXERCISE: {type} - {duration} - {intensity}"
-- ctx add-note "MOOD: {emoji} | ENERGY: {1-10} | STRESS: {1-10}"
+- ctx note "SLEEP: {hours}h | QUALITY: {1-5}"
+- ctx note "EXERCISE: {type} - {duration} - {intensity}"
+- ctx note "MOOD: {emoji} | ENERGY: {1-10} | STRESS: {1-10}"
 - Memory: Correlate wellness metrics with productivity
 ```
 
@@ -101,10 +101,10 @@ Wellness context:
 ```
 Decision context:
 1. ctx create decision-{topic}
-2. ctx add-note "QUESTION: {decision_to_make}"
-3. ctx add-note "OPTION: {option_name} | PROS: {list} | CONS: {list}"
-4. ctx add-note "CRITERIA: {factor} - WEIGHT: {importance}"
-5. ctx add-note "DECISION: {chosen_option} | RATIONALE: {reasoning}"
+2. ctx note "QUESTION: {decision_to_make}"
+3. ctx note "OPTION: {option_name} | PROS: {list} | CONS: {list}"
+4. ctx note "CRITERIA: {factor} - WEIGHT: {importance}"
+5. ctx note "DECISION: {chosen_option} | RATIONALE: {reasoning}"
 6. Memory: Track decision patterns and outcomes
 ```
 
@@ -113,9 +113,9 @@ Decision context:
 ```
 Reading tracking:
 - ctx create reading-{year}
-- ctx add-note "BOOK: {title} by {author} | STATUS: {reading/completed}"
-- ctx add-note "RATING: {1-5} | TAGS: {categories}"
-- ctx add-note "TAKEAWAY: {main_lesson} | APPLICATION: {how_to_use}"
+- ctx note "BOOK: {title} by {author} | STATUS: {reading/completed}"
+- ctx note "RATING: {1-5} | TAGS: {categories}"
+- ctx note "TAKEAWAY: {main_lesson} | APPLICATION: {how_to_use}"
 ```
 
 ## Habit Tracking
@@ -124,8 +124,8 @@ Reading tracking:
 Habit context:
 1. ctx create habit-{habit_name}
 2. Daily check-in:
-   - ctx add-note "CHECK: {date} - {completed: Y/N} | STREAK: {days}"
-   - ctx add-note "OBSTACLE: {what_prevented} | SOLUTION: {adjustment}"
+   - ctx note "CHECK: {date} - {completed: Y/N} | STREAK: {days}"
+   - ctx note "OBSTACLE: {what_prevented} | SOLUTION: {adjustment}"
 3. Memory: Track habit formation patterns
 ```
 
@@ -135,10 +135,10 @@ Habit context:
 Monthly retrospective:
 1. ctx create retro-{YYYY-MM}
 2. Reflection prompts:
-   - ctx add-note "GRATEFUL: {three_things}"
-   - ctx add-note "LEARNED: {key_lessons}"
-   - ctx add-note "IMPROVED: {areas_of_growth}"
-   - ctx add-note "CHALLENGE: {biggest_obstacle} | OVERCAME: {how}"
+   - ctx note "GRATEFUL: {three_things}"
+   - ctx note "LEARNED: {key_lessons}"
+   - ctx note "IMPROVED: {areas_of_growth}"
+   - ctx note "CHALLENGE: {biggest_obstacle} | OVERCAME: {how}"
 3. Memory: Build personal growth timeline
 ```
 

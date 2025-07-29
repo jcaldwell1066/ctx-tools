@@ -486,6 +486,9 @@ cli.add_command(switch, name='sw')
 cli.add_command(list, name='ls')
 cli.add_command(status, name='st')
 cli.add_command(add_note, name='n')
+cli.add_command(add_note, name='add-note')
+cli.add_command(show_notes, name='show-notes')
+cli.add_command(set_state, name='set-status')
 
 
 if __name__ == '__main__':

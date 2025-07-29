@@ -30,7 +30,7 @@ Example:
 1. ctx switch {context_name}
 2. memory search "{relevant_pattern}"
 3. Execute task based on context + memory
-4. ctx add-note "RESULT: {outcome}"
+4. ctx note "RESULT: {outcome}"
 5. memory add observation to relevant entity
 ```
 
@@ -42,10 +42,10 @@ Pattern: State-driven branching with memory consultation
 if ctx_status == "🚫":
     memory search "unblock {blocker_type}"
     apply_solution_from_memory()
-    ctx set-status "💻"
+    ctx set-state "💻"
 elif ctx_status == "👀":
     check_review_feedback()
-    ctx add-note "FEEDBACK: {summary}"
+    ctx note "FEEDBACK: {summary}"
     update_memory_with_patterns()
 ```
 
@@ -55,13 +55,13 @@ elif ctx_status == "👀":
 Pattern: Capture failure -> Find pattern -> Apply fix -> Document
 
 on_error:
-    ctx add-note "ERROR: {error_details}"
+    ctx note "ERROR: {error_details}"
     solutions = memory search "{error_type} solution"
     if solutions:
         apply_solution(solutions[0])
-        ctx add-note "APPLIED: {solution_id}"
+        ctx note "APPLIED: {solution_id}"
     else:
-        ctx set-status "🚫"
+        ctx set-state "🚫"
         escalate_to_human()
 ```
 
@@ -72,7 +72,7 @@ on_error:
 ```
 Workflow:
 1. Analyze current context notes
-2. Extract patterns: ctx show-notes | analyze_patterns()
+2. Extract patterns: ctx notes | analyze_patterns()
 3. Memory query: Similar patterns in history
 4. Apply learned optimizations
 5. Create new memory observations
@@ -109,14 +109,14 @@ Query examples:
 Agent A (Developer):
 1. ctx create feature-xyz
 2. Implement feature
-3. ctx add-note "HANDOFF: Ready for review"
+3. ctx note "HANDOFF: Ready for review"
 4. memory relation: feature-xyz -> ready_for -> review
 
 Agent B (Reviewer):
 1. memory search "ready_for review"
 2. ctx switch feature-xyz
 3. Perform review
-4. ctx add-note "REVIEW: {feedback}"
+4. ctx note "REVIEW: {feedback}"
 ```
 
 ### 2. Continuous Learning
@@ -261,11 +261,11 @@ Regular maintenance:
 # Test context-memory sync
 ctx create test-integration
 memory create entity "test-integration" type="test"
-ctx add-note "TEST: Integration verified"
+ctx note "TEST: Integration verified"
 memory add observation "test-integration" "Integration verified"
 
 # Verify bidirectional lookup
-ctx show-notes | grep "TEST"
+ctx notes | grep "TEST"
 memory open "test-integration"
 ```
 
